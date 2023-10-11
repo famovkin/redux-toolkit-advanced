@@ -7,6 +7,7 @@ export const postAPI = createApi({
     // baseUrl: 'https://jsonplaceholder.typicode.com',
     baseUrl: 'http://localhost:3002',
   }),
+  tagTypes: ['Posts'],
   endpoints: (build) => ({
     fetchAllPosts: build.query<IPost[], number>({
       query: (limit: number = 5) => ({
@@ -15,6 +16,30 @@ export const postAPI = createApi({
           _limit: limit,
         },
       }),
+      providesTags: (result) => ['Posts'],
+    }),
+    createPost: build.mutation<IPost, IPost>({
+      query: (post) => ({
+        url: `/posts/${post.id}`,
+        method: 'POST',
+        body: post,
+      }),
+      invalidatesTags: ['Posts'],
+    }),
+    updatePost: build.mutation<IPost, IPost>({
+      query: (post) => ({
+        url: `/posts/${post.id}`,
+        method: 'PUT',
+        body: post,
+      }),
+      invalidatesTags: ['Posts'],
+    }),
+    deletePost: build.mutation<IPost, IPost>({
+      query: (post) => ({
+        url: `/posts/${post.id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Posts'],
     }),
   }),
 });
